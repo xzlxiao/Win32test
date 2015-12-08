@@ -15,16 +15,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	MSG			 msg;
 	WNDCLASS	 wndclass;
 	
-	wndclass.style = CS_HREDRAW | CS_VREDRAW;
-	wndclass.lpfnWndProc = WndProc;
-	wndclass.cbClsExtra = 0;
+	wndclass.style = CS_HREDRAW | CS_VREDRAW;					// 类风格p47，CS_HREDRAW窗口的水平尺寸和CS_VREDRAW垂直尺寸被改变，所有基于该窗口类的窗口都将被重新刷新
+	wndclass.lpfnWndProc = WndProc;								// 注册窗口过程
+	wndclass.cbClsExtra = 0;									// 两个字段用于在类结构和Win内部维护的窗口结构中预留一些额外的空间
 	wndclass.cbWndExtra = 0;
-	wndclass.hInstance = hInstance;
+	wndclass.hInstance = hInstance;								// 注册应用程序的实例句柄
 	wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);			// LoadIcon 加载图标，以供程序使用
 	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);				// LoadCursor 加载鼠标光标，以供程序使用
 	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);		// GetStockObject 获取一个图形对象。在本例中是一个用来对窗口背景进行重绘的图刷
-	wndclass.lpszMenuName = NULL;
-	wndclass.lpszClassName = szAppName;
+	wndclass.lpszMenuName = NULL;								// 指定窗口类的菜单
+	wndclass.lpszClassName = szAppName;							// 为窗口类赋予名称
 
 	if (!RegisterClass(&wndclass))		// RegisterClass 为应用程序的窗口注册一个窗口类
 	{
@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	}
 	hwnd = CreateWindow(szAppName,		// 窗口类名， CreateWindow 基于窗口类创建一个窗口
 		TEXT("The Hello Program"),	// 窗口标题
-		WS_OVERLAPPEDWINDOW, 		// 窗口类型
+		WS_OVERLAPPEDWINDOW, 		// 窗口风格
 		CW_USEDEFAULT, 				// 初始化x坐标
 		CW_USEDEFAULT, 				// 初始化y坐标
 		CW_USEDEFAULT,				// 初始化宽度
