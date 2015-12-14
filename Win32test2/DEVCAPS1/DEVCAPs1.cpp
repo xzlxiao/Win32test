@@ -15,6 +15,8 @@ struct
 	TCHAR *szLabel;
 	TCHAR *szDesc;
 }
+
+// 结构体数组的iIndex储存的是GetDeviceCaps的第二个参数
 devcaps[] =
 {
 	HORZSIZE, TEXT("HORZSIZE"),TEXT("Width in millimeters:"),
@@ -25,8 +27,10 @@ devcaps[] =
 
 	VERTRES, TEXT("VERTRES"), TEXT("Height in raster lines:"),
 
+	// 每个像素的颜色位数
 	BITSPIXEL, TEXT("BITSPIXEL"),TEXT("Color bits per pixel:"),
 
+	// 色彩平面
 	PLANES, TEXT("PLANES"), TEXT("Number of color planes:"),
 
 	NUMBRUSHES, TEXT("NUMBRUSHES"), TEXT("Number of device brushes:"),
@@ -41,12 +45,16 @@ devcaps[] =
 
 	PDEVICESIZE, TEXT("PDEVICESIZE"), TEXT("Size of device structure:"),
 
+	// 每一像素点的宽度
 	ASPECTX, TEXT("ASPECTX"), TEXT("Relative width of pixel:"),
 
+	// 每一像素点的高度
 	ASPECTY, TEXT("ASPECTY"), TEXT("Relative height of pixel:"),
 
+	// 每一像素点的对角线长度
 	ASPECTXY, TEXT("ASPECTXY"), TEXT("Relative diagonal of pixel:"),
 
+	// 逻辑像素：以每英寸的像素数计算的非实际分辨率
 	LOGPIXELSX, TEXT("LOGPIXELSX"), TEXT("Horizontal dots per inch:"),
 
 	LOGPIXELSY, TEXT("LOGPIXELSY"), TEXT("Vertical dots per inch:"),
@@ -146,10 +154,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			TextOut(hdc, 14 * cxCaps + 35 * cxChar, cyChar*i, szBuffer,
 				wsprintf(szBuffer, TEXT("%5d"),
-					GetSystemMetrics(devcaps[i].iIndex)));
+					GetDeviceCaps(hdc, devcaps[i].iIndex)));
 
 			SetTextAlign(hdc, TA_LEFT | TA_TOP);	//	使更改的坐标恢复正常
 		}
+
+		// 通过GetSystemMetrics获取屏幕分辨率，问题是得到的值只有真实值的一半
+		TextOut(hdc, 0, (NUMLINES + 1) * cyChar, L"水平分辨率",  wcslen(L"水平分辨率"));
+		TextOut(hdc, 14 * cxCaps, cyChar * (NUMLINES + 1), szBuffer, wsprintf(szBuffer, TEXT("%5d"), GetSystemMetrics(SM_CXSCREEN)));
+		TextOut(hdc, 0, (NUMLINES + 2) * cyChar, L"垂直分辨率", wcslen(L"垂直分辨率"));
+		TextOut(hdc, 14 * cxCaps, cyChar * (NUMLINES + 2), szBuffer, wsprintf(szBuffer, TEXT("%5d"), GetSystemMetrics(SM_CYSCREEN)));
 		EndPaint(hwnd, &ps);				// EndPaint 结束窗口绘制
 		return 0;
 
