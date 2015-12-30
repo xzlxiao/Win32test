@@ -81,6 +81,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		hdc = BeginPaint(hwnd, &ps);		// BeginPaint 标明窗口绘制开始
 
+		// 改变默认画刷，包括WHITE_BRUDH, LTGRAY_BRUSH, GRAY_BRUSH, DKGRAY_BRRUSH, BLACK_BRUSH, NULLBRUSH
 		SelectObject(hdc, GetStockObject(GRAY_BRUSH));
 
 		for (i = 0; i < 10; i++)
